@@ -1,0 +1,8 @@
+camera 10 10 0
+normal_ 1 1 0
+upvector 0 0 1
+screen_dist 100
+view_depth 400
+screen_width 640
+screen_height 480
+light 0 150 150
