@@ -236,9 +236,10 @@ void renderer::render(int frame_number, bool logs) const
     }
 }
 
-void renderer::join_to_video(string frame_template, string video_name, int framerate, int quality) const
+void renderer::join_to_video(string frame_template, string video_name, int framerate, int quality, string ffmpeg_directory) const
 {
+    if (video_name.find(".avi") == string::npos) throw render_exception("Error: unsupported video format.");
     stringstream ss;
-    ss << "ffmepg -framerate " << framerate << " -i " << frame_template << " -q " << quality << " " << video_name;
+    ss << ffmpeg_directory << "\\ffmpeg -framerate " << framerate << " -i " << frame_template << " -q " << quality << " " << ffmpeg_directory << "\\" << video_name;
     system((ss.str()).c_str());
 }
