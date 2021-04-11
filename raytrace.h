@@ -45,7 +45,7 @@ public:
     renderer(string scene_template, string obj_template, string save_template, int thread_number);
     void render(int frame_number, bool logs) const;
     void render_scope(int scope_start, int scope_end, bool logs, spinlock& slock) const;
-    void join_to_video(string frame_template, string video_name, int framerate, int quality) const;
+    void join_to_video(string frame_template, string video_name, int framerate, int quality, string ffmpeg_directory) const;
 };
 
 #endif // RAYTRACE
