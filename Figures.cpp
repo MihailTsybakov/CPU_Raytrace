@@ -335,7 +335,7 @@ bool box::traceback(const vector<double>& s_point,
         }
 
     }
-    if (intersections.size() == 0)
+    if (intersections.size() == 0 || intersections.size() == 3)
     {
         return false;
     }
