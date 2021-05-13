@@ -50,7 +50,7 @@ private:
 
     double half_diag_quad;
 
-    bool internal(vector<double> point, int edge_number) const;
+    bool internal_point(vector<double> point, int edge_number) const;
 public:
     box(double x1, double y1, double z1,
         double x8, double y8, double z8,
@@ -70,7 +70,7 @@ private:
     vector<double> optimize_center; // Circumscribed sphere center
     double circumscribed_RAD;
 
-    bool internal(vector<double> point, vector<vector<double>> edge) const;
+    bool internal_point(vector<double> point, vector<vector<double>> edge) const;
 public:
     tetra(double x1, double y1, double z1,
         double x2, double y2, double z2,
