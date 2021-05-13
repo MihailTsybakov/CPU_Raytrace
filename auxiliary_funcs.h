@@ -31,6 +31,8 @@ int closest_point(vector<vector<double>> points, vector<double> point);
 
 vector<double> to_length(vector<double> src, double new_len);
 
+void print_v(std::vector<double> v);
+
 void check_system_cores();
 
 class spinlock
