@@ -57,20 +57,14 @@ vector<double> operator*(vector<double> v, double multiplier)
 vector<double> operator+(vector<double> v1, vector<double> v2)
 {
     vector<double> res_v;
-    for (size_t i = 0; i < v1.size(); ++i)
-    {
-        res_v.push_back(v1[i] + v2[i]);
-    }
+    for (size_t i = 0; i < v1.size(); ++i) res_v.push_back(v1[i] + v2[i]);
     return res_v;
 }
 
 vector<double> operator-(vector<double> v1, vector<double> v2)
 {
     vector<double> res_v;
-    for (size_t i = 0; i < v1.size(); ++i)
-    {
-        res_v.push_back(v1[i] - v2[i]);
-    }
+    for (size_t i = 0; i < v1.size(); ++i) res_v.push_back(v1[i] - v2[i]);
     return res_v;
 }
 
@@ -81,8 +75,8 @@ double vectmul_area(vector<double> v1, vector<double> v2)
 
 int closest_point(vector<vector<double>> points, vector<double> point)
 {
-    double min_d = 10e10;
-    int closest_ind;
+    double min_d = dist_quad(point, points[0]);
+    int closest_ind = 0;
     for (size_t i = 0; i < points.size(); ++i)
     {
         vector<double> p_ = { points[i][0], points[i][1], points[i][2] };
@@ -119,4 +113,9 @@ void spinlock::lock() noexcept
 void spinlock::unlock() noexcept
 {
     lock_f.store(false, std::memory_order_relaxed);
+}
+
+void print_v(std::vector<double> v)
+{
+    std::cout << "(" << v[0] << ", " << v[1] << ", " << v[2] << ")" << std::endl;
 }
