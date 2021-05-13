@@ -40,7 +40,7 @@ double raytracer::calc_light(vector<double> surface_normal, vector<double> light
     {
     case 1: // sphere
         if (cos_alpha + 0.25 <= 0) return 0;
-        return pow(cos_alpha + 0.25, 3);
+        return pow(cos_alpha + 0.25, 4);
 
     case 2: // box
         if (cos_alpha + 0.6 <= 0) return 0;
@@ -123,6 +123,8 @@ void raytracer::raytrace() const
         reader so_reader(src_scene, src_obj); //scene & objects reader
         so_reader.read_scene(camera, normal, light, upvector, screen_distance, screen_height, screen_width, view_depth);
         so_reader.read_objects(shapes);
+
+        //std::cout << "Shape number: " << shapes.size() << std::endl;
 
         vector<double> ort_sup = vectmul(upvector, normal);
         upvector = to_length(upvector, screen_height / 2);
