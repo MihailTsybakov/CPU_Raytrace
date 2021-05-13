@@ -12,14 +12,12 @@ raytracer::raytracer(string src_scene, string src_obj, string saveto, int thread
 
 bool raytracer::calc_shadow(vector<double> point, vector<double> light_src, vector<figure*> shapes) const
 {
-    double light_dist = dist_quad(light_src, point);
     for (auto shape : shapes)
     {
         vector<double> t_result = { 0,0,0, 0,0,0, 0,0,0, 0,0 };
         if (shape->traceback(point, light_src - point, t_result, 2))
         {
-            vector<double> intersection = { t_result[0], t_result[1], t_result[2] };
-            if (light_dist < dist_quad(point, intersection)) return true;
+            return true;
         }
     }
     return false;
@@ -39,8 +37,8 @@ double raytracer::calc_light(vector<double> surface_normal, vector<double> light
     switch (otype)
     {
     case 1: // sphere
-        if (cos_alpha + 0.25 <= 0) return 0;
-        return pow(cos_alpha + 0.25, 4);
+        if (cos_alpha + 0.3 <= 0) return 0;
+        return pow(cos_alpha + 0.3, 3);
 
     case 2: // box
         if (cos_alpha + 0.6 <= 0) return 0;
@@ -51,6 +49,7 @@ double raytracer::calc_light(vector<double> surface_normal, vector<double> light
         return pow(cos_alpha + 0.6, 6);
 
     default:
+        std::cout << "Error: unknown object type." << std::endl;
         return 0;
     }
 }
