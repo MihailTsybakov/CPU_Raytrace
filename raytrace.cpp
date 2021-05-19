@@ -23,34 +23,56 @@ bool raytracer::calc_shadow(vector<double> point, vector<double> light_src, vect
     return false;
 }
 
-double raytracer::calc_light(vector<double> surface_normal, vector<double> light_ray, int stype, int otype, bool shadow) const
+std::vector<int> raytracer::calc_light(vector<double> surface_normal, vector<double> light_ray, int stype, int otype, bool shadow, std::vector<int> rgb) const
 {
-    if (shadow == true) return 0;
+    int R = rgb[0], G = rgb[1], B = rgb[2];
+    if (shadow == true) return {0,0,0};
     surface_normal = to_length(surface_normal, 1.0);
     light_ray = to_length(light_ray, 1.0);
     double cos_alpha = scalmul(surface_normal, light_ray);
+    double coef;
     if (stype == 0) // Diffuse
     {
-        if (cos_alpha <= 0) return 0;
-        return cos_alpha;
+        if (cos_alpha <= 0) return {0,0,0};
+        R *= cos_alpha; G *= cos_alpha; B *= cos_alpha;
+        R = static_cast<int>(R); if (R > 255) R = 255;
+        G = static_cast<int>(G); if (G > 255) G = 255;
+        B = static_cast<int>(B); if (B > 255) B = 255;
+        return { R,G,B };
     }
     switch (otype)
     {
     case 1: // sphere
-        if (cos_alpha + 0.3 <= 0) return 0;
-        return pow(cos_alpha + 0.3, 3);
+        if (cos_alpha + 0.3 <= 0) return {0,0,0};
+        coef = pow(cos_alpha + 0.3, 3);
+        R *= coef; G *= coef; B *= coef;
+        R = static_cast<int>(R); if (R > 255) R = 255;
+        G = static_cast<int>(G); if (G > 255) G = 255;
+        B = static_cast<int>(B); if (B > 255) B = 255;
+        return { R,G,B };
 
     case 2: // box
-        if (cos_alpha + 0.6 <= 0) return 0;
-        return pow(cos_alpha + 0.6, 5);
+        if (cos_alpha + 0.1 <= 0) return { 0,0,0 };
+        coef = pow(cos_alpha + 0.1, 7);
+        if (cos_alpha >= 0.999) R = 255, G = 255, B = 255;
+        R *= coef; G *= coef; B *= coef;
+        R = static_cast<int>(R); if (R > 255) R = 255;
+        G = static_cast<int>(G); if (G > 255) G = 255;
+        B = static_cast<int>(B); if (B > 255) B = 255;
+        return { R,G,B };
 
     case 3: // tetra
-        if (cos_alpha + 0.6 <= 0) return 0;
-        return pow(cos_alpha + 0.6, 6);
+        if (cos_alpha + 0.6 <= 0) return {0,0,0};
+        coef = pow(cos_alpha + 0.6, 6);
+        R *= coef; G *= coef; B *= coef;
+        R = static_cast<int>(R); if (R > 255) R = 255;
+        G = static_cast<int>(G); if (G > 255) G = 255;
+        B = static_cast<int>(B); if (B > 255) B = 255;
+        return { R,G,B };
 
     default:
         std::cout << "Error: unknown object type." << std::endl;
-        return 0;
+        return {0,0,0};
     }
 }
 
@@ -88,17 +110,19 @@ void raytracer::stripe_trace(int h_start, int h_end,
                 vector<double> surf_normal = { closest_intersection[6], closest_intersection[7], closest_intersection[8] };
                 vector<double> light_ray = light_source - point;
 
-                double light_coef = calc_light(surf_normal, light_ray,
+                std::vector<int> rgb = calc_light(surf_normal, light_ray,
                     closest_intersection[9],
                     closest_intersection[10],
-                    calc_shadow(point, light_source, shapes));
+                    calc_shadow(point, light_source, shapes), {static_cast<int>(closest_intersection[3]), 
+                    static_cast<int>(closest_intersection[4]),
+                    static_cast<int>(closest_intersection[5])});
 
-                if (dist_quad(point, curr_p) > view_depth * view_depth) light_coef = 0;
+                if (dist_quad(point, curr_p) > view_depth * view_depth) rgb = {0,0,0};
 
-                int R = static_cast<int>(light_coef * closest_intersection[3]); if (R > 255) R = 255;
-                int G = static_cast<int>(light_coef * closest_intersection[4]); if (G > 255) G = 255;
-                int B = static_cast<int>(light_coef * closest_intersection[5]); if (B > 255) B = 255;
-                frame.put_pixel(j, i, R, G, B); /* !!! */
+                int R = rgb[0];
+                int G = rgb[1];
+                int B = rgb[2];
+                frame.put_pixel(j, i, R, G, B); /* ! */
             }
             curr_p = curr_p - ortsup;
         }
