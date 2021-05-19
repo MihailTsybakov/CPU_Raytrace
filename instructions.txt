@@ -1,8 +1,8 @@
-camera 10 10 200
-normal_ 1 1 -0.5
+camera 0 -200 0
+normal_ 1 1 0
 upvector 0 0 1
-screen_dist 150
+screen_dist 400
 view_depth 1500
-screen_width 1500
+screen_width 800
 screen_height 800
-light -100 200 450
+light 300 100 80
