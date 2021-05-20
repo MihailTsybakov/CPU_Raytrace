@@ -64,6 +64,7 @@ std::vector<int> raytracer::calc_light(vector<double> surface_normal, vector<dou
     case 3: // tetra
         if (cos_alpha + 0.6 <= 0) return {0,0,0};
         coef = pow(cos_alpha + 0.6, 6);
+        if (cos_alpha >= 0.999) R = 255, G = 255, B = 255;
         R *= coef; G *= coef; B *= coef;
         R = static_cast<int>(R); if (R > 255) R = 255;
         G = static_cast<int>(G); if (G > 255) G = 255;
