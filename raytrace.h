@@ -19,7 +19,7 @@ private:
     string src_scene, src_obj, saveto;
     int thread_number;
     bool calc_shadow(vector<double> point, vector<double> light_src, vector<figure*> shapes) const;
-    double calc_light(vector<double> surface_normal, vector<double> light_ray, int stype, int otype, bool shadow) const;
+    std::vector<int> calc_light(vector<double> surface_normal, vector<double> light_ray, int stype, int otype, bool shadow, std::vector<int> rgb) const;
 public:
     raytracer(string src_scene, string src_obj, string saveto, int thread_number);
     void raytrace() const;
